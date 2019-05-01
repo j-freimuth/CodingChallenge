@@ -4,10 +4,11 @@ allowedCharacters = "abcdefghijklmnopqrstuvwxyz"
 
 class Word:
 
-    def __init__(self, word):
+    def __init__(self, word, targetWord = None):
         self.word = str.lower(word)
         self.createCharacterMap()
-        self.sortTuples()
+        if targetWord is not None:
+            self.isValid = self.compare(targetWord) >= 0
 
     # create a charmap counting all relevant chars
     def createCharacterMap(self):
@@ -19,12 +20,6 @@ class Word:
             else:
                 charMap[character] = 1
         self.characterMap = charMap
-
-    # create sorted tuples
-    def sortTuples(self):
-        listTuples = [(key, self.characterMap[key]) for key in self.characterMap.keys()]
-        self.length = len(listTuples)
-        self.sortedTuples = sorted(listTuples)
 
     # compares two word objects
     def compare(self, targetWord):
@@ -46,7 +41,6 @@ class Word:
         thisWord = copy.deepcopy(self)
         thisWord.word += " " + otherWord.word
         thisWord.characterMap = self.mergeMaps(thisWord.characterMap, otherWord.characterMap)
-        thisWord.sortTuples()
         return thisWord
 
     # Merges two maps together
